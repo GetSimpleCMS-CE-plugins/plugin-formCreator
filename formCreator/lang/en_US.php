@@ -5,7 +5,7 @@ $i18n = array(
     'ADD_NEW'=>'Add New',
     'SETTINGS'=>'Settings',
     'EDIT'=>'Edit',
-    'DELETE'=>'Delete',
+    'DELETEELEMENT'=>'Delete',
     'COFFE'=>'You like my work? Or you use this for commercial project?',
     'BACKTOLIST'=>'Back to list',
     'RECIPIENT'=>'Email recipient',
@@ -22,6 +22,7 @@ $i18n = array(
     'SAVEFORM'=>'Save Form',
     'LABELEMPTY'=>'label cannot be empty!',
     'QUESTION'=>'Are you want delete this item?',
+    'PLACEHOLDERINFO'=>'form name without spacebar and big letter',
 
     //frontend form
 

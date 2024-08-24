@@ -41,7 +41,7 @@ class backendFormCreator
         <option value="textarea" >Textarea</option>
     </select>
     
-        <label style="display:flex;align-items:center;gap:5px;margin-top:10px;margin-bottom:10px;">Required?</label>
+        <label style="display:flex;align-items:center;gap:5px;margin-top:10px;margin-bottom:10px;">'.i18n_r('formCreator/REQUIRED').'?</label>
                        <input name="required-'.$key.'" type="checkbox" '. (isset($value[2]) && $value[2] =='on' ? 'checked':'').'>
     
     </div>

@@ -21,7 +21,7 @@
 
                     <div class="link">
                         <a href="?id=formCreator&editform=<?php echo pathinfo($file)['filename']; ?>" class="w3-button  w3-black w3-button w3-tiny w3-hover-black" style="text-decoration:none !important;"><?php echo i18n_r('formCreator/EDIT');?></a>
-                        <a href="?id=formCreator&delete=<?php echo pathinfo($file)['filename']; ?>" class="w3-button w3-red w3-button w3-tiny w3-hover-black" onclick="confirm('<?php echo i18n_r('formCreator/QUESTION');?>')" style="text-decoration:none !important;"><?php echo i18n_r('formCreator/DELETE');?></a>
+                        <a href="?id=formCreator&delete=<?php echo pathinfo($file)['filename']; ?>" class="w3-button w3-red w3-button w3-tiny w3-hover-black" onclick="confirm('<?php echo i18n_r('formCreator/QUESTION');?>')" style="text-decoration:none !important;"><?php echo i18n_r('formCreator/DELETEELEMENT');?></a>
                     </div>
                 </li>
 

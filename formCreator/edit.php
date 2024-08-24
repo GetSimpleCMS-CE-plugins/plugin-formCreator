@@ -3,7 +3,7 @@
 
 
 <div class="w3-black ">
-    <input name="nameform" required placeholder="form name without spacebar and big letter"
+    <input name="nameform" required placeholder="<?php echo i18n_r('formCreator/PLACEHOLDERINFO');?>"
 
         <?php if (isset($_GET['editform'])) {
             echo 'value="' . $_GET['editform'] . '"';
@@ -146,7 +146,7 @@
        </select>
    
    
-                  <label style="display:flex;align-items:center;gap:5px;margin-top:10px;margin-bottom:10px;">Required?</label>
+                  <label style="display:flex;align-items:center;gap:5px;margin-top:10px;margin-bottom:10px;"><?php echo i18n_r('formCreator/REQUIRED');?>?</label>
                        <input name="required-${hash}" type="checkbox" ${requiredInput == "on" ? "checked": "" }>
        </div>
    

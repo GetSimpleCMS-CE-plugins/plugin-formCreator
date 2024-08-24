@@ -20,9 +20,11 @@ class frontendFormCreator
             $file = json_decode(file_get_contents(GSDATAOTHERPATH . 'formCreator/settings.json'));
             $from = $file->from;
             $to = $file->to;
-            $to = $file->secretkey;
-            $secretkey = $file->secretkey;
+           $secretkey = $file->secretkey;
             $sitekey = $file->sitekey;
+            $redirectpage= $file->redirectpage;
+            $successpage = $file->successpage;
+            $errorpage = $file->errorpage;
         };
 
 
@@ -62,6 +64,7 @@ class frontendFormCreator
 
 
         if (isset($_POST['submit'])) {
+            global $SITEURL;
             $to = $to;
             $secretKey =  @$secretkey; // Klucz tajny reCAPTCHA
             $responseKey = $_POST['g-recaptcha-response'];
@@ -137,9 +140,20 @@ class frontendFormCreator
 
                 // Wysyłanie wiadomości
                 if (mail($to, $subject, $message, $headers)) {
-                    echo "<span color='green'>".i18n_r('formCreator/SENDEDMSG')."</span>";
+
+                    if($redirectpage !== ''){
+                        echo "<meta http-equiv='refresh' content='0;url=" . $SITEURL . $successpage."'>";
+                    }else{
+                        echo "<span color='green'>".i18n_r('formCreator/SENDEDMSG')."</span>";
+                    };
+
                 } else {
-                    echo "<span color='red'>".i18n_r('formCreator/SENDESMGERROR')."</span>";
+
+                    if($redirectpage !== ''){
+                        echo "<meta http-equiv='refresh' content='0;url=" . $SITEURL . $errorpage."'>";
+                    }else{
+                        echo "<span color='red'>".i18n_r('formCreator/SENDESMGERROR')."</span>";
+                    };
                    
                 }
             }

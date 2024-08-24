@@ -4,8 +4,11 @@
     $file = json_decode(file_get_contents(GSDATAOTHERPATH . 'formCreator/settings.json'));
     $from = $file->from;
     $to = $file->to;
-    $secretkey = $file->secretkey;
+     $secretkey = $file->secretkey;
     $sitekey = $file->sitekey;
+    $redirectpage= $file->redirectpage;
+    $successpage = $file->successpage;
+    $errorpage = $file->errorpage;
 };
 
 ?>
@@ -32,10 +35,80 @@
     <label for="" class="w3-padding-16"><?php echo i18n_r('formCreator/SITEKEY');?></label>
     <input type="text" name="sitekey" value="<?php echo @$sitekey; ?>" class="w3-input w3-border">
 
+
+    <div class="w3-red w3-padding-16 w3-margin-top" style="color:#fff !important;">
+    <label for="" style="color:#fff !important;margin-left:10px;">Redirect success/error to page?<input type="checkbox" name="redirectpage" style="margin-left:10px" value="on"></label>
+    </div>
+
+    <label for="" class="w3-padding-16">Success page redirect</label>
+
+    <?php 
+     echo '<select name="successpage" class="w3-border" style="width:100%;padding:8px;margin:10px 0;">';
+    echo '<option value="none">none</option>';
+
+    $pages = GSDATAPAGESPATH;
+
+    foreach(glob($pages.'*.xml') as $page){
+
+        $name = pathinfo($page)['filename'];
+        print_r($name);
+
+        echo '<option value="'.$name.'">'.$name.'</option>';
+        
+    };
+
+    echo '</select>';
+
+    ;?>
+
+    <label for="">Error page redirect</label>
+
+    <?php 
+    
+    echo '<select name="errorpage" class="w3-border" style="width:100%;padding:8px;margin:10px 0;">';
+    echo '<option value="none">none</option>';
+
+    $pages = GSDATAPAGESPATH;
+
+    foreach(glob($pages.'*.xml') as $page){
+
+        $name = pathinfo($page)['filename'];
+        print_r($name);
+
+        echo '<option value="'.$name.'">'.$name.'</option>';
+        
+    };
+
+    echo '</select>';
+
+    ;?>
+
     <input type="submit" name="savesettings" value="<?php echo i18n_r('formCreator/SAVESETTINGS');?>" class="w3-black w3-btn w3-margin-top">
 
 </form>
 
+
+<?php if(isset($redirectpage)):?>
+
+    <script>
+
+if('<?php echo $redirectpage;?>' == 'on'){
+document.querySelector('input[name="redirectpage"]').checked = true;
+};
+  
+
+if('<?php echo $successpage;?>' !== 'none' || '<?php echo $successpage;?>' !== ''  ){
+document.querySelector('select[name="successpage"]').value = '<?php echo $successpage;?>';
+};
+
+if('<?php echo $errorpage;?>' !== 'none' || '<?php echo $errorpage;?>' !== ''  ){
+document.querySelector('select[name="errorpage"]').value = '<?php echo $errorpage;?>';
+};
+
+
+    </script>
+
+<?php endif;?>
 
 
 
@@ -48,13 +121,20 @@ if (isset($_POST['savesettings'])) {
     $from = isset($_POST['from']) ? htmlspecialchars($_POST['from']) : '';
     $secretkey = isset($_POST['secretkey']) ? htmlspecialchars($_POST['secretkey']) : '';
     $sitekey = isset($_POST['sitekey']) ? htmlspecialchars($_POST['sitekey']) : '';
+    $redirectpage = isset($_POST['redirectpage'])? htmlspecialchars($_POST['redirectpage']) : '';
+    $successpage = isset($_POST['successpage'])? htmlspecialchars($_POST['successpage']) : '';
+    $errorpage = isset($_POST['errorpage'])? htmlspecialchars($_POST['errorpage']) : '';
+
 
     // Create an associative array with the form data
     $settings = array(
         "to" => $to,
         "from" => $from,
         "secretkey" => $secretkey,
-        "sitekey" => $sitekey
+        "sitekey" => $sitekey,
+        "redirectpage"=>$redirectpage,
+        "successpage"=>$successpage,
+        "errorpage"=>$errorpage
     );
 
     // Encode the array as a JSON object
