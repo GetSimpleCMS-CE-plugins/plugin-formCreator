@@ -13,13 +13,13 @@
 
 </div>
 
-<div class="w3-panel w3-border  w3-light-grey w3-padding">
+<div class="w3-panel w3-border  w3-blue-grey w3-padding">
 
-    <label for=""><?php echo i18n_r('formCreator/LABELTYPE');?></label>
+    <label class="w3-text-white" for=""><?php echo i18n_r('formCreator/LABELTYPE');?></label>
     <input type="text" class="labelinput w3-border" required style="width:100%;padding:5px;background:#fff;margin-top:5px;">
 
 
-    <label for=""><?php echo i18n_r('formCreator/INPUTTYPE');?></label>
+    <label class="w3-text-white" for=""><?php echo i18n_r('formCreator/INPUTTYPE');?></label>
     <select class="typeinput w3-border" style="width:100%;padding:5px;background:#fff;margin-top:5px;">
         <option value="checkbox">Checkbox</option>
         <option value="color">Color</option>
@@ -39,7 +39,7 @@
 
     </select>
 
-    <label for="" style="display:flex;align-items:center;gap:5px;margin-top:10px;"><?php echo i18n_r('formCreator/REQUIRED');?> ?  <input type="checkbox" class="requiredinput"></label>
+    <label class="w3-text-white" for="" style="display:flex;align-items:center;gap:5px;margin-top:10px;"><?php echo i18n_r('formCreator/REQUIRED');?> ?  <input type="checkbox" class="requiredinput"></label>
 
    
 
