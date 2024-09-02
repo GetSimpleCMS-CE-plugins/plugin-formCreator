@@ -2,71 +2,104 @@
 
 class frontendFormCreator
 {
-
-
-    function show($val)
+     function show($val)
     {
-        function hex_encode($input) {
+         function hex_encode($input)
+        {
             return bin2hex($input);
         }
-        
-        function hex_decode($input) {
+
+         function hex_decode($input)
+        {
             return hex2bin($input);
         }
 
-        if (file_exists(GSDATAOTHERPATH . 'formCreator/settings.json')) {
-
-
+         if (file_exists(GSDATAOTHERPATH . 'formCreator/settings.json')) {
             $file = json_decode(file_get_contents(GSDATAOTHERPATH . 'formCreator/settings.json'));
             $from = $file->from;
             $to = $file->to;
-           $secretkey = $file->secretkey;
+            $secretkey = $file->secretkey;
             $sitekey = $file->sitekey;
-            $redirectpage= $file->redirectpage;
+            $redirectpage = $file->redirectpage;
             $successpage = $file->successpage;
             $errorpage = $file->errorpage;
-        };
-
+        }
 
         echo '<form method="POST">';
 
+        // Check if form definition file exists and read the form structure
         if (file_exists(GSDATAOTHERPATH . 'formCreator/' . $val . '.json')) {
-
             $js = file_get_contents(GSDATAOTHERPATH . 'formCreator/' . $val . '.json');
-
             $json = json_decode($js);
 
-            foreach ($json as $key => $value) {
-
+             foreach ($json as $key => $value) {
                 $hashed = hex_encode($value[0]);
 
-                echo  '<div class="formcreator-'.$hashed.'"><label for="' . $hashed . '">' . $value[0] . '</label>';
+                 if ($value[1] == 'textarea') {
+                    echo '<div class="formcreator-' . $hashed . '">';
+                    echo '<label for="' . $hashed . '">' . htmlspecialchars($value[0]) . '</label>';
+                    echo '<textarea name="' .  $hashed . '" ' . (isset($value[2]) && $value[2] == 'on' ? 'required' : '') . '></textarea></div>';
 
-                if ($value[1] == 'textarea') {
-                    echo  '<textarea name="' .  $hashed . '" '.(isset($value[2]) && $value[2]=='on'? 'required':'').'></textarea></div>';
-                } else {
-                    echo  '<input type="' . $value[1] . '" name="' . $hashed . '" '.(isset($value[2]) && $value[2]=='on'? 'required':'').'></div>';
+                 } elseif ($value[1] == 'select') {
+                    $selectarray = isset($value[3]) ? $value[3] : $value[2];
+                    $selectarray = explode("|", $selectarray);
+
+                    echo '<div class="formcreator-' . $hashed . '">';
+                    echo '<label for="' . $hashed . '">' . htmlspecialchars($value[0]) . '</label>';
+                    echo '<select name="' .  hex_encode($value[0]) . '" ' . (isset($value[2]) && $value[2] == 'on' ? 'required' : '') . '>';
+                    foreach ($selectarray as $item) {
+                        $item = trim($item);
+                        echo '<option value="' . htmlspecialchars($item) . '">' . htmlspecialchars($item) . '</option>';
+                    }
+                    echo '</select></div>';
+
+                 } elseif ($value[1] == 'checkboxes') {
+                    echo '<fieldset class="formcreator-' . $hashed . '">';
+                    echo '<legend>' . htmlspecialchars($value[0]) . '</legend>';
+
+                    $selectarray = isset($value[3]) ? $value[3] : $value[2];
+                    $selectarray = explode("|", $selectarray);
+
+                    foreach ($selectarray as $item) {
+                        $item = trim($item);
+                        echo '<label for="' . $hashed . '"><input type="checkbox" value="' . htmlspecialchars($item) . '" name="' .  hex_encode($value[0]) . '[]" ' . (isset($value[2]) && $value[2] == 'on' ? 'required' : '') . '> ' . htmlspecialchars($item) . ' </label>';
+                    }
+
+                    echo '</fieldset>';
+
+                 } elseif ($value[1] == 'radios') {
+                    $selectarray = isset($value[3]) ? $value[3] : $value[2];
+                    $selectarray = explode("|", $selectarray);
+
+                    echo '<fieldset class="formcreator-' . $hashed . '">';
+                    echo '<legend>' . htmlspecialchars($value[0]) . '</legend>';
+
+                    foreach ($selectarray as $item) {
+                        $item = trim($item);
+                        echo '<label><input type="radio" value="' . htmlspecialchars($item) . '" name="' .  hex_encode($value[0]) . '" ' . (isset($value[2]) && $value[2] == 'on' ? 'required' : '') . '> ' . htmlspecialchars($item) . ' </label>';
+                    }
+
+                    echo '</fieldset>';
+
+                 } else {
+                    echo '<div class="formcreator-' . $hashed . '">';
+                    echo '<label for="' . $hashed . '">' . htmlspecialchars($value[0]) . '</label>';
+                    echo '<input type="' . htmlspecialchars($value[1]) . '" name="' . $hashed . '" ' . (isset($value[2]) && $value[2] == 'on' ? 'required' : '') . '>';
+                    echo '</div>';
                 }
-            };
+            }
         }
 
-
-
-        echo  '
-            <div class="g-recaptcha" data-sitekey="' . @$sitekey . '"></div>
-            <input type="submit" style="margin-top:10px;" name="submit" value="'.i18n_r('formCreator/SENDMESSAGE').'">';
-
-       echo '</form>
+         echo '
+            <div class="g-recaptcha" data-sitekey="' . htmlspecialchars(@$sitekey) . '"></div>
+            <input type="submit" style="margin-top:10px;" name="submit" value="' . i18n_r('formCreator/SENDMESSAGE') . '">
+        ';
+        echo '</form>
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>';
 
-
-
-
-
+        // Handle form submission
         if (isset($_POST['submit'])) {
-            global $SITEURL;
-            $to = $to;
-            $secretKey =  @$secretkey; // Klucz tajny reCAPTCHA
+            $secretKey = @$secretkey;
             $responseKey = $_POST['g-recaptcha-response'];
             $userIP = $_SERVER['REMOTE_ADDR'];
             $url = "https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$responseKey&remoteip=$userIP";
@@ -74,17 +107,15 @@ class frontendFormCreator
             $response = file_get_contents($url);
             $responseKeys = json_decode($response, true);
 
-            if (intval($responseKeys["success"]) !== 1) {
-                echo "<span style='color:red;'>".i18n_r('formCreator/CAPTCHAERROR')."</span>";
+             if (intval($responseKeys["success"]) !== 1) {
+                echo "<span style='color:red;'>Please complete the CAPTCHA verification.</span>";
             } else {
-
-
-                $subject = i18n_r('formCreator/SUBJECT');
+                $subject = "Message from website!";
                 $headers = "MIME-Version: 1.0" . "\r\n";
                 $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-                $headers .= "From: " . @$from . "\r\n";
+                $headers .= "From: " . htmlspecialchars(@$from) . "\r\n";
 
-                $message = "
+                 $message = "
                 <html>
                 <head>
                     <style>
@@ -122,45 +153,50 @@ class frontendFormCreator
                         <div class='content'>
                 ";
 
-                foreach ($_POST as $name => $value) {
-                    if ($name !== 'submit' && $name !== 'g-recaptcha-response') {
-                        $message .= "<p><strong>" . htmlspecialchars(hex_decode($name)) . ":</strong> " . htmlspecialchars($value) . "</p>";
-                    }
-                }
+                 $message .= $this->arrayToString($_POST);
 
                 $message .= "
                         </div>
                         <div class='footer'>
-                            ".i18n_r('formCreator/FOOTERINFO')."
+                          ".i18n_r('formCreator/FOOTERINFO')."
                         </div>
                     </div>
                 </body>
                 </html>
                 ";
 
-                // Wysyłanie wiadomości
+                // Send the email
                 if (mail($to, $subject, $message, $headers)) {
-
-                    if($redirectpage !== ''){
-                        echo "<meta http-equiv='refresh' content='0;url=" . $SITEURL . $successpage."'>";
-                    }else{
-                        echo "<span color='green'>".i18n_r('formCreator/SENDEDMSG')."</span>";
-                    };
-
+                    echo "<span style='color:green;'>".i18n_r('formCreator/SENDEDMSG')."</span>";
                 } else {
-
-                    if($redirectpage !== ''){
-                        echo "<meta http-equiv='refresh' content='0;url=" . $SITEURL . $errorpage."'>";
-                    }else{
-                        echo "<span color='red'>".i18n_r('formCreator/SENDESMGERROR')."</span>";
-                    };
-                   
-                }
+                    echo "<span style='color:red;'>".i18n_r('formCreator/SENDEDMSGERROR')."</span>";
+                 }
             }
         }
     }
 
+     function arrayToString($array)
+    {
+        $string = '';
 
+        foreach ($array as $name => $value) {
+            if ($name !== 'submit' && $name !== 'g-recaptcha-response') {
+                // Decode the hex-encoded field name
+                $decodedName = hex_decode($name);
 
-   
+                // Check if the value is an array
+                if (is_array($value)) {
+                    // Join array elements with commas and sanitize each element
+                    $joinedValues = implode(', ', array_map('htmlspecialchars', $value));
+                    $string .= "<strong>" . htmlspecialchars($decodedName) . "</strong>: " . $joinedValues . "<br>";
+                } else {
+                    // Sanitize value
+                    $string .= "<strong>" . htmlspecialchars($decodedName) . "</strong>: " . htmlspecialchars($value) . "<br>";
+                }
+            }
+        }
+
+        return $string;
+    }
 }
+?>

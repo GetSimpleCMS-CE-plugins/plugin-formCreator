@@ -1,9 +1,9 @@
-<h3><?php echo i18n_r('formCreator/CREATEEDITFORM');?></h3>
-<a href="<?php echo $SITEURL . $GSADMIN . '/load.php?id=formCreator'; ?>" style="text-decoration:none !important;" class=" w3-button w3-black w3-margin-bottom w3-hover-black"><?php echo i18n_r('formCreator/BACKTOLIST');?></a>
+<h3><?php echo i18n_r('formCreator/CREATEEDITFORM'); ?></h3>
+<a href="<?php echo $SITEURL . $GSADMIN . '/load.php?id=formCreator'; ?>" style="text-decoration:none !important;" class=" w3-button w3-black w3-margin-bottom w3-hover-black"><?php echo i18n_r('formCreator/BACKTOLIST'); ?></a>
 
 
 <div class="w3-black ">
-    <input name="nameform" required placeholder="<?php echo i18n_r('formCreator/PLACEHOLDERINFO');?>"
+    <input name="nameform" required placeholder="<?php echo i18n_r('formCreator/PLACEHOLDERINFO'); ?>"
 
         <?php if (isset($_GET['editform'])) {
             echo 'value="' . $_GET['editform'] . '"';
@@ -15,11 +15,11 @@
 
 <div class="w3-panel w3-border  w3-blue-grey w3-padding">
 
-    <label class="w3-text-white" for=""><?php echo i18n_r('formCreator/LABELTYPE');?></label>
+    <label class="w3-text-white" for=""><?php echo i18n_r('formCreator/LABELTYPE'); ?></label>
     <input type="text" class="labelinput w3-border" required style="width:100%;padding:5px;background:#fff;margin-top:5px;">
 
 
-    <label class="w3-text-white" for=""><?php echo i18n_r('formCreator/INPUTTYPE');?></label>
+    <label class="w3-text-white" for=""><?php echo i18n_r('formCreator/INPUTTYPE'); ?></label>
     <select class="typeinput w3-border" style="width:100%;padding:5px;background:#fff;margin-top:5px;">
         <option value="checkbox">Checkbox</option>
         <option value="color">Color</option>
@@ -36,14 +36,17 @@
         <option value="time">Time</option>
         <option value="week">Week</option>
         <option value="textarea">Textarea</option>
+        <option value="select">Select</option>
+        <option value="checkboxes">Checkboxes</option>
+        <option value="radios">Radios</option>
 
     </select>
 
-    <label class="w3-text-white" for="" style="display:flex;align-items:center;gap:5px;margin-top:10px;"><?php echo i18n_r('formCreator/REQUIRED');?> ?  <input type="checkbox" class="requiredinput"></label>
+    <label class="w3-text-white" for="" style="display:flex;align-items:center;gap:5px;margin-top:10px;"><?php echo i18n_r('formCreator/REQUIRED'); ?> ? <input type="checkbox" class="requiredinput"></label>
 
-   
 
-    <button class="addtoinput w3-button w3-green w3-margin-top w3-margin-bottom w3-hover-black"><?php echo i18n_r('formCreator/ADDTOFORM');?></button>
+
+    <button class="addtoinput w3-button w3-green w3-margin-top w3-margin-bottom w3-hover-black"><?php echo i18n_r('formCreator/ADDTOFORM'); ?></button>
 
 </div>
 
@@ -64,7 +67,7 @@
     }; ?>
 
 
-    <input type="submit" name="saveform" value="<?php echo i18n_r('formCreator/SAVEFORM');?>" class="saveform w3-button w3-green w3-hover-green">
+    <input type="submit" name="saveform" value="<?php echo i18n_r('formCreator/SAVEFORM'); ?>" class="saveform w3-button w3-green w3-hover-green">
 </form>
 
 
@@ -105,15 +108,20 @@
 
         let hash = encodedTimestamp;
 
-        if(document.querySelector('.requiredinput').checked){
+        if (document.querySelector('.requiredinput').checked) {
             requiredInput = 'on';
-        }else{
-            requiredInput ='';
+        } else {
+            requiredInput = '';
         }
 
 
         if (labelInput.trim() !== '') {
-            formCreatorForm.insertAdjacentHTML('beforebegin', `
+
+
+            if (typeInput == 'select' || typeInput == 'checkboxes') {
+
+
+                formCreatorForm.insertAdjacentHTML('beforebegin', `
         
        
         <div class="w3-border w3-panel w3-light-grey w3-padding-16" style="position:relative;padding-top:30px !important;">
@@ -143,10 +151,16 @@
            <option value="time" ${typeInput == 'time' ? 'selected':''}>Time</option>
             <option value="week" ${typeInput == 'week' ? 'selected':''}>Week</option>
            <option value="textarea" ${typeInput == 'textarea' ? 'selected':''}>Textarea</option>
+           <option value="select" ${typeInput == 'select' ? 'selected':''}>Select</option>
+           <option value="checkboxes" ${typeInput == 'checkboxes' ? 'selected':''}>Checkboxes</option>
+            <option value="radios" ${typeInput == 'radios' ? 'selected':''}>Radios</option>
+
        </select>
    
+        <input name="select-${hash}"   type="text" placeholder="option1|option2|option3"  style="width:100%; margin:10px 0;background:#fff;border:solid 1px #ddd;padding:10px;box-sizing:border-box;">
+
    
-                  <label style="display:flex;align-items:center;gap:5px;margin-top:10px;margin-bottom:10px;"><?php echo i18n_r('formCreator/REQUIRED');?>?</label>
+                  <label style="display:flex;align-items:center;gap:5px;margin-top:10px;margin-bottom:10px;"><?php echo i18n_r('formCreator/REQUIRED'); ?>?</label>
                        <input name="required-${hash}" type="checkbox" ${requiredInput == "on" ? "checked": "" }>
        </div>
    
@@ -154,8 +168,83 @@
    
          `);
 
+                document.querySelector(`select[name="type-${hash}"]`).addEventListener(`change`, () => {
+
+                    if (document.querySelector(`select[name="type-${hash}"]`).value == "select" || document.querySelector(`select[name="type-${hash}"]`).value == "checkboxes" || document.querySelector(`select[name="type-${hash}"]`).value == "radios") {
+                        document.querySelector(`input[name="select-${hash}"]`).style.display = "block";
+                    } else {
+                        document.querySelector(`input[name="select-${hash}"]`).style.display = "none";
+                    }
+
+                });
+
+
+            } else {
+
+                formCreatorForm.insertAdjacentHTML('beforebegin', `
+        
+       
+        <div class="w3-border w3-panel w3-light-grey w3-padding-16" style="position:relative;padding-top:30px !important;">
+                   <button onclick="event.preventDefault();this.parentElement.remove()" class="w3-btn w3-hover-black w3-red closethis" style="position:absolute;top:0;right:0;">X</button>
+                 
+    <label>Label</label>
+    
+           <input type="text" name="label-${hash}" value="${labelInput}" style="width:100%; margin:10px 0;background:#fff;border:solid 1px #ddd;padding:10px;box-sizing:border-box;">
+         
+   
+         
+         <label>Type</label>
+      <select name="type-${hash}" style="width:100%; margin:10px 0;background:#fff;border:solid 1px #ddd;padding:10px;box-sizing:border-box;">
+            <option value="checkbox" ${typeInput == 'checkbox' ? 'selected':''}>Checkbox</option>
+           <option value="color" ${typeInput == 'color' ? 'selected':''}>Color</option>
+           <option value="date" ${typeInput == 'date' ? 'selected':''}>Date</option>
+           <option value="datetime-local" ${typeInput == 'datetime-local' ? 'selected':''}>Datetime Local</option>
+           <option value="email" ${typeInput == 'email' ? 'selected':''}>Email</option>
+           <option value="hidden" ${typeInput == 'hidden' ? 'selected':''}>Hidden</option>
+           <option value="month" ${typeInput == 'month' ? 'selected':''}>Month</option>
+           <option value="number" ${typeInput == 'number' ? 'selected':''}>Number</option>
+           <option value="password" ${typeInput == 'password' ? 'selected':''}>Password</option>
+           <option value="radio" ${typeInput == 'radio' ? 'selected':''}>Radio</option>
+           <option value="range" ${typeInput == 'range' ? 'selected':''}>Range</option>
+           <option value="tel" ${typeInput == 'tel' ? 'selected':''}>Telephone</option>
+           <option value="text" ${typeInput == 'text' ? 'selected':''}>Text</option>
+           <option value="time" ${typeInput == 'time' ? 'selected':''}>Time</option>
+            <option value="week" ${typeInput == 'week' ? 'selected':''}>Week</option>
+           <option value="textarea" ${typeInput == 'textarea' ? 'selected':''}>Textarea</option>
+           <option value="select" ${typeInput == 'select' ? 'selected':''}>Select</option>
+           <option value="checkboxes" ${typeInput == 'checkboxes' ? 'selected':''}>Checkboxes</option>
+                     <option value="radios" ${typeInput == 'radios' ? 'selected':''}>Radios</option>
+
+       </select>
+   
+         <input name="select-${hash}"   type="text" placeholder="option1|option2|option3"  style="width:100%; margin:10px 0;background:#fff;border:solid 1px #ddd;padding:10px;box-sizing:border-box;">
+
+   
+                  <label style="display:flex;align-items:center;gap:5px;margin-top:10px;margin-bottom:10px;"><?php echo i18n_r('formCreator/REQUIRED'); ?>?</label>
+                       <input name="required-${hash}" type="checkbox" ${requiredInput == "on" ? "checked": "" }>
+       </div>
+   
+        
+   
+         `);
+
+                document.querySelector(`select[name="type-${hash}"]`).addEventListener(`change`, () => {
+
+                    if (document.querySelector(`select[name="type-${hash}"]`).value == "select" || document.querySelector(`select[name="type-${hash}"]`).value == "checkboxes" || document.querySelector(`select[name="type-${hash}"]`).value == "radios") {
+                        document.querySelector(`input[name="select-${hash}"]`).style.display = "block";
+                    } else {
+                        document.querySelector(`input[name="select-${hash}"]`).style.display = "none";
+                    }
+
+                });
+
+
+            }
+
+
+
         } else {
-            alert('<?php echo i18n_r('formCreator/LABELEMPTY');?>');
+            alert('<?php echo i18n_r('formCreator/LABELEMPTY'); ?>');
         };
 
 

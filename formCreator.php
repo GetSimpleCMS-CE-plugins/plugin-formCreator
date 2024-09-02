@@ -9,7 +9,7 @@ $thisfile = basename(__FILE__, ".php");
 register_plugin(
 	$thisfile, //Plugin id
 	'formCreator', 	//Plugin name
-	'1.0', 		//Plugin version
+	'2.0', 		//Plugin version
 	'Multicolor',  //Plugin author
 	'https://ko-fi.com/multicolorplugins', //author website
 	'Create own form!', //Plugin description

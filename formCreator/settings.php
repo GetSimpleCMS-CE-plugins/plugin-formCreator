@@ -37,10 +37,10 @@
 
 
     <div class="w3-red w3-padding-16 w3-margin-top" style="color:#fff !important;">
-    <label for="" style="color:#fff !important;margin-left:10px;">Redirect success/error to page?<input type="checkbox" name="redirectpage" style="margin-left:10px" value="on"></label>
+    <label for="" style="color:#fff !important;margin-left:10px;"><?php echo i18n_r('formCreator/REDIRECTQUESTION');?><input type="checkbox" name="redirectpage" style="margin-left:10px" value="on"></label>
     </div>
 
-    <label for="" class="w3-padding-16">Success page redirect</label>
+    <label for="" class="w3-padding-16"><?php echo i18n_r('formCreator/SUCCESSPAGE');?></label>
 
     <?php 
      echo '<select name="successpage" class="w3-border" style="width:100%;padding:8px;margin:10px 0;">';
@@ -61,7 +61,7 @@
 
     ;?>
 
-    <label for="">Error page redirect</label>
+    <label for=""><?php echo i18n_r('formCreator/ERRORPAGE');?></label>
 
     <?php 
     

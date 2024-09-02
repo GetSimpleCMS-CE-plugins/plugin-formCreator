@@ -36,7 +36,14 @@ $i18n = array(
 
     'SUBJECT'=>'Message from website!',
     'NEWMSG'=>'You have received a new message from your website:',
-    'FOOTERINFO'=>'This email was sent from your website contact form.'
+    'FOOTERINFO'=>'This email was sent from your website contact form.',
+
+
+    //messagesettings
+
+    'REDIRECTQUESTION'=>'Redirect success/error to page?',
+    'SUCCESSPAGE'=>'Success page redirect',
+    'ERRORPAGE'=>'Error page redirect'
   
   );
 

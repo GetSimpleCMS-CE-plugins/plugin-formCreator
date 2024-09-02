@@ -33,7 +33,12 @@ $i18n = array(
     //message from form
     'SUBJECT'=>'Wiadomość ze strony internetowej!',
     'NEWMSG'=>'Otrzymałeś nową wiadomość ze swojej strony internetowej:',
-    'FOOTERINFO'=>'Ten email został wysłany z formularza kontaktowego na Twojej stronie.'
+    'FOOTERINFO'=>'Ten email został wysłany z formularza kontaktowego na Twojej stronie.',
+
+
+    'REDIRECTQUESTION'=>'Przekierowanie strony w przypadku błędu lub sukcesu?',
+    'SUCCESSPAGE'=>'Przekierowanie strony w przypadku sukcesu',
+    'ERRORPAGE'=>'Przekierowanie do strony w przypadku błędu'
 );
 
 ?>
