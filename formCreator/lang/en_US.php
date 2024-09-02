@@ -6,11 +6,11 @@ $i18n = array(
     'SETTINGS'=>'Settings',
     'EDIT'=>'Edit',
     'DELETEELEMENT'=>'Delete',
-    'COFFE'=>'You like my work? Or you use this for commercial project?',
+    'COFFE'=>'Do you like my work? Are you using  this in a commercial project?',
     'BACKTOLIST'=>'Back to list',
     'RECIPIENT'=>'Email recipient',
     'SENDER'=>'Email sender',
-    'CAPTCHAINFO'=>'Create yours captcha and copy the code from',
+    'CAPTCHAINFO'=>'Create your Captcha and copy the codes from',
     'SECRETKEY'=>'Secret Key',
     'SITEKEY'=>'Site Key',
     'SAVESETTINGS'=>'Save Settings',
@@ -18,11 +18,11 @@ $i18n = array(
     'LABELTYPE'=>'Label type',
     'INPUTTYPE'=>'Input type',
     'REQUIRED'=>'Required',
-    'ADDTOFORM'=>'Add to form',
+    'ADDTOFORM'=>'Add to Form',
     'SAVEFORM'=>'Save Form',
-    'LABELEMPTY'=>'label cannot be empty!',
-    'QUESTION'=>'Are you want delete this item?',
-    'PLACEHOLDERINFO'=>'form name without spacebar and big letter',
+    'LABELEMPTY'=>'Label cannot be empty!',
+    'QUESTION'=>'Are you sure you want to delete this item?',
+    'PLACEHOLDERINFO'=>'Form name can not include spaces or capital letters.',
 
     //frontend form
 
@@ -34,9 +34,9 @@ $i18n = array(
 
     //message from form
 
-    'SUBJECT'=>'Message from website!',
+    'SUBJECT'=>'Message from your website!',
     'NEWMSG'=>'You have received a new message from your website:',
-    'FOOTERINFO'=>'This email was sent from your website contact form.',
+    'FOOTERINFO'=>'This email was sent from your websites contact form.',
 
 
     //messagesettings
