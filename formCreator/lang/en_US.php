@@ -8,8 +8,8 @@ $i18n = array(
     'DELETEELEMENT'=>'Delete',
     'COFFE'=>'Do you like my work? Are you using  this in a commercial project?',
     'BACKTOLIST'=>'Back to list',
-    'RECIPIENT'=>'Email recipient',
-    'SENDER'=>'Email sender',
+    'RECIPIENT'=>'Recipients Email ',
+    'SENDER'=>'Senders Email ',
     'CAPTCHAINFO'=>'Create your Captcha and copy the codes from',
     'SECRETKEY'=>'Secret Key',
     'SITEKEY'=>'Site Key',
@@ -34,7 +34,7 @@ $i18n = array(
 
     //message from form
 
-    'SUBJECT'=>'Message from your website!',
+    'SUBJECT'=>'New message from your website!',
     'NEWMSG'=>'You have received a new message from your website:',
     'FOOTERINFO'=>'This email was sent from your websites contact form.',
 
